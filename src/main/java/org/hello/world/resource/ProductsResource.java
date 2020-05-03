@@ -2,6 +2,7 @@ package org.hello.world.resource;
 
 
 import org.hello.world.entity.Product;
+import org.hello.world.service.ProductService;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -16,7 +17,7 @@ import java.util.List;
 public class ProductsResource {
 
     @Inject
-    EntityManager entityManager;
+    ProductService productService;
     //quarkus doesn't recommend privete in injected attributes
     //then reflection will be avoided for injection
 
@@ -24,12 +25,12 @@ public class ProductsResource {
     @GET
     @Produces(value = MediaType.APPLICATION_JSON)
     public List<Product> getProducts(){
-        return entityManager.createQuery("select p from Product p", Product.class).getResultList();
+        return productService.getProducts();
     }
 
     @POST
     @Consumes(value = MediaType.APPLICATION_JSON)
     public void addProduct(Product p){
-        entityManager.persist(p);
+        productService.addProduct(p);
     }
 }
