@@ -12,7 +12,7 @@ services:
     volumes:
       - ./test-data:/var/lib/postgresql/data 
     networks:
-      - postgres-compose-network
+      - compose-network
       
   pgadmin:
     image: dpage/pgadmin4
@@ -24,7 +24,7 @@ services:
     depends_on:
       - postgres
     networks:
-      - postgres-compose-network
+      - compose-network
       
   jaeger:
     image: jaegertracing/all-in-one:latest
@@ -35,8 +35,28 @@ services:
       - "14250:14250"
       - "5778:5775"
     networks:
-      - postgres-compose-network
+      - compose-network
+
+#  prometheus-server:
+#    image: prom/prometheus
+#    ports:
+#      - 9090:9090
+#    volumes:
+#      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+#    networks:
+#      - compose-network
+#
+#  grafana-ui:
+#    image: grafana/grafana
+#    ports:
+#      - 3000:3000
+#    environment:
+#      - GF_SECURITY_ADMIN_PASSWORD=root
+#    links:
+#      - prometheus-server:prometheus
+#    networks:
+#      - compose-network
 
 networks: 
-  postgres-compose-network:
+  compose-network:
     driver: bridge
